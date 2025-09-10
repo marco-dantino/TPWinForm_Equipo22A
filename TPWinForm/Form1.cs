@@ -16,5 +16,9 @@ namespace TPWinForm
         {
             InitializeComponent();
         }
+
+        private class Pasdsd {
+            public int MyProperty { get; set; }
+        }
     }
 }
