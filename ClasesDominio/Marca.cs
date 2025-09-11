@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ClasesDominio
 {
-    internal class Marca
+    public class Marca
     {
     }
 }

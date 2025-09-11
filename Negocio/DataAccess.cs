@@ -7,7 +7,7 @@ using System.Data.SqlClient;
 
 namespace Negocio
 {
-    internal class DataAccess
+    public class DataAccess
     {
         private SqlConnection connection;
         private SqlCommand command;

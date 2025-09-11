@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TPWinForm", "TPWinForm\TPWi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClasesDominio", "ClasesDominio\ClasesDominio.csproj", "{AEC37879-65F6-448B-A6E6-4844167EBCF6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Negocio", "Negocio\Negocio.csproj", "{B464B098-8007-4524-9BCE-7DEDAEB55F83}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{AEC37879-65F6-448B-A6E6-4844167EBCF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AEC37879-65F6-448B-A6E6-4844167EBCF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AEC37879-65F6-448B-A6E6-4844167EBCF6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B464B098-8007-4524-9BCE-7DEDAEB55F83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B464B098-8007-4524-9BCE-7DEDAEB55F83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B464B098-8007-4524-9BCE-7DEDAEB55F83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B464B098-8007-4524-9BCE-7DEDAEB55F83}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

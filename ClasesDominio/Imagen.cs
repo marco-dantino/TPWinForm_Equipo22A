@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace ClasesDominio
 {
-    internal class Imagen
+    public class Imagen
     {
     }
 }
