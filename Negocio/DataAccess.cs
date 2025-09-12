@@ -38,10 +38,11 @@ namespace Negocio
             {
                 throw ex;
             }
-            finally
-            {
-                connection.Close();
-            }
+        }
+
+        public void setearParametro(string nombre, object valor)
+        {
+            command.Parameters.AddWithValue(nombre, valor);
         }
 
         public void cerrarConexion()
