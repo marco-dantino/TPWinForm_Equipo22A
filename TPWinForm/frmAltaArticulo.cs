@@ -17,13 +17,19 @@ namespace TPWinForm
 {
     public partial class frmAltaArticulo : Form
     {
-        private Articulo articulo;
-
+        private Articulo articulo = null;
 
         public frmAltaArticulo()
         {
             InitializeComponent();
-            articulo = new Articulo();
+            
+        }
+        public frmAltaArticulo(Articulo articulo)
+        {
+            InitializeComponent();
+            Text = "Modificar Artículo";
+            lblTitulo.Text = "Modificar Artículo";
+            this.articulo = articulo;
         }
 
         private void btnAceptar_Click(object sender, EventArgs e)
@@ -32,17 +38,33 @@ namespace TPWinForm
 
             try
             {
+                if (articulo == null) 
+                {     
+                    articulo = new Articulo();
+                }
+
                 articulo.Nombre = txtNombre.Text;
                 articulo.Descripcion = txtDescripcion.Text;
                 articulo.Codigo = txtCodigo.Text;
                 articulo.Precio = float.Parse(txtPrecio.Text);
-                articulo.Urlimagen = txtImagen.Text;
+
+                articulo.Urlimagen = string.IsNullOrWhiteSpace(txtImagen.Text) ? "https://res.cloudinary.com/dqzfmh5kz/image/upload/v1757619195/pngtree-gray-network-placeholder-png-image_3416659_ihqz1y.jpg" : txtImagen.Text;
+
 
                 articulo.Marca = (Marca)cmbMarca.SelectedItem;
                 articulo.Categoria = (Categoria)cmbCategoria.SelectedItem;
 
-                negArt.agregarArticulo(articulo);
-                MessageBox.Show("Agregado exitosamente");
+                if (articulo.Id == 0) 
+                { 
+                    negArt.agregarArticulo(articulo);
+                    MessageBox.Show("Agregado exitosamente");
+                }
+                else
+                {
+                    negArt.modificar(articulo);
+                    MessageBox.Show("Modificado exitosamente");
+                }
+
             }
             catch (Exception ex)
             {

@@ -10,10 +10,11 @@ namespace Negocio
 {
     public class NegocioArticulo
     {
+
+        DataAccess datos = new DataAccess();
         public List<Articulo> listar()
         {
             List<Articulo> lista = new List<Articulo>();
-            DataAccess datos = new DataAccess();
 
             string query = @"
                 SELECT A.Id, A.Codigo, A.Nombre, A.Descripcion, 
@@ -66,7 +67,6 @@ namespace Negocio
 
         public int agregarArticulo(Articulo newArticulo)
         {
-            DataAccess datos = new DataAccess();
             try
             {
                 datos.setearConsulta(@" INSERT INTO ARTICULOS (Codigo, Nombre, Descripcion, IdMarca, IdCategoria, Precio) OUTPUT Inserted.Id VALUES (@Codigo, @Nombre, @Descripcion, @IdMarca, @IdCategoria, @Precio)");
@@ -99,7 +99,6 @@ namespace Negocio
 
         public void agregarImagen(int idArticulo, string urlImagen)
         {
-            DataAccess datos = new DataAccess();
             try
             {
                 datos.setearConsulta("INSERT INTO IMAGENES (IdArticulo, ImagenUrl) VALUES (@IdArticulo, @ImagenUrl)");
@@ -110,6 +109,69 @@ namespace Negocio
             catch (Exception ex)
             {
                 throw new Exception("Error al agregar imagen", ex);
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+        public void modificar(Articulo articulo)
+        {
+            try
+            {
+                datos.setearConsulta(@"UPDATE ARTICULOS SET Codigo = @Codigo, Nombre = @Nombre, Descripcion = @Descripcion, IdMarca = @IdMarca, IdCategoria = @IdCategoria, Precio = @PrecioWHERE Id = @Id");
+
+                datos.setearParametro("@Codigo", articulo.Codigo);
+                datos.setearParametro("@Nombre", articulo.Nombre);
+                datos.setearParametro("@Descripcion", articulo.Descripcion);
+                datos.setearParametro("@IdMarca", articulo.Marca.id);
+                datos.setearParametro("@IdCategoria", articulo.Categoria.id);
+                datos.setearParametro("@Precio", articulo.Precio);
+                datos.setearParametro("@Id", articulo.Id);
+
+                datos.ejecutarAccion();
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+
+            if (!string.IsNullOrEmpty(articulo.Urlimagen))
+                modificarImagen(articulo.Id, articulo.Urlimagen);
+        }
+        public void modificarImagen(int idArticulo, string urlImagen)
+        {
+            DataAccess datos = new DataAccess();
+            try
+            {
+                datos.setearConsulta(@"IF EXISTS (SELECT 1 FROM IMAGENES WHERE IdArticulo = @IdArticulo) UPDATE IMAGENES SET ImagenUrl = @ImagenUrl WHERE IdArticulo = @IdArticulo ELSE INSERT INTO IMAGENES (IdArticulo, ImagenUrl) VALUES (@IdArticulo, @ImagenUrl)");
+                datos.setearParametro("@IdArticulo", idArticulo);
+                datos.setearParametro("@ImagenUrl", urlImagen);
+                datos.ejecutarAccion();
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
+        public void eliminar(int idArticulo) 
+        {
+            try
+            {
+                datos.setearConsulta("DELETE FROM IMAGENES WHERE IdArticulo = @IdArticulo");
+                datos.setearParametro("@IdArticulo", idArticulo);
+                datos.ejecutarAccion();
+                datos.cerrarConexion();
+
+                datos = new DataAccess();
+                datos.setearConsulta("DELETE FROM ARTICULOS WHERE Id = @Id");
+                datos.setearParametro("@Id", idArticulo);
+                datos.ejecutarAccion();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al eliminar artículo", ex);
             }
             finally
             {

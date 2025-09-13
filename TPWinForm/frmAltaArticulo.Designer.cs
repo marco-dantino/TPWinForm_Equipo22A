@@ -46,7 +46,7 @@ namespace TPWinForm
             this.cmbCategoria = new System.Windows.Forms.ComboBox();
             this.txtPrecio = new System.Windows.Forms.TextBox();
             this.txtImagen = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.lblTitulo = new System.Windows.Forms.Label();
             this.btnAceptar = new System.Windows.Forms.Button();
             this.btnCancelar = new System.Windows.Forms.Button();
             this.flowLayoutPanel1.SuspendLayout();
@@ -216,17 +216,17 @@ namespace TPWinForm
             this.txtImagen.Size = new System.Drawing.Size(100, 20);
             this.txtImagen.TabIndex = 4;
             // 
-            // label1
+            // lblTitulo
             // 
-            this.label1.AutoSize = true;
-            this.label1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.Coral;
-            this.label1.Location = new System.Drawing.Point(63, 26);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(211, 33);
-            this.label1.TabIndex = 9;
-            this.label1.Text = "Alta de Articulo";
+            this.lblTitulo.AutoSize = true;
+            this.lblTitulo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.lblTitulo.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTitulo.ForeColor = System.Drawing.Color.Coral;
+            this.lblTitulo.Location = new System.Drawing.Point(63, 26);
+            this.lblTitulo.Name = "lblTitulo";
+            this.lblTitulo.Size = new System.Drawing.Size(211, 33);
+            this.lblTitulo.TabIndex = 9;
+            this.lblTitulo.Text = "Alta de Articulo";
             // 
             // btnAceptar
             // 
@@ -255,7 +255,7 @@ namespace TPWinForm
             this.ClientSize = new System.Drawing.Size(354, 450);
             this.Controls.Add(this.btnCancelar);
             this.Controls.Add(this.btnAceptar);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.lblTitulo);
             this.Controls.Add(this.flowLayoutPanel2);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Name = "frmAltaArticulo";
@@ -288,7 +288,7 @@ namespace TPWinForm
         private TextBox txtPrecio;
         private TextBox txtImagen;
         private ComboBox cmbMarca;
-        private Label label1;
+        private Label lblTitulo;
         private Button btnAceptar;
         private Button btnCancelar;
     }
