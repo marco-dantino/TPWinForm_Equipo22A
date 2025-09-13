@@ -1,99 +1,82 @@
-﻿using System;
+﻿using ClasesDominio;
+using Negocio;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using ClasesDominio;
-using Negocio;
+using static System.Net.WebRequestMethods;
 
 namespace TPWinForm
 {
     public partial class frmAltaArticulo : Form
     {
-        List<Marca> marcas;
-        List<Categoria> categorias;
+        private Articulo articulo;
 
-        private Articulo articulo = new Articulo();
+
         public frmAltaArticulo()
         {
             InitializeComponent();
+            articulo = new Articulo();
         }
 
         private void btnAceptar_Click(object sender, EventArgs e)
         {
-            NegocioArticulo artiNeg = new NegocioArticulo();
+            NegocioArticulo negArt = new NegocioArticulo();
 
-            if (articulo == null)
+            try
             {
-                articulo = new Articulo();
-            }
-                try
-                {
-                    articulo.nombre = txtNombre.Text;
-                    articulo.descripcion = txtDescripcion.Text;
-                    articulo.codigo = txtCodigo.Text;
-                    articulo.precio = float.Parse(txtPrecio.Text);
+                articulo.Nombre = txtNombre.Text;
+                articulo.Descripcion = txtDescripcion.Text;
+                articulo.Codigo = txtCodigo.Text;
+                articulo.Precio = float.Parse(txtPrecio.Text);
+                articulo.Urlimagen = txtImagen.Text;
 
-                    articulo.marca = new Marca();
+                articulo.Marca = (Marca)cmbMarca.SelectedItem;
+                articulo.Categoria = (Categoria)cmbCategoria.SelectedItem;
 
-                    Marca marcaSeleccionada = (Marca)cmbMarca.SelectedItem;
-                    articulo.marca.descripcion = marcaSeleccionada.descripcion;
-                    articulo.marca.id = marcaSeleccionada.id;
-
-                    articulo.categoria = new Categoria();
-
-                    Categoria categoriaSeleccionada = (Categoria)cmbCategoria.SelectedItem;
-                    articulo.categoria.descripcion = categoriaSeleccionada.descripcion;
-                    articulo.categoria.id = categoriaSeleccionada.id;
-
-                    int idArticulo = artiNeg.agregarArticulo(articulo);
-                    DataAccess hola = new DataAccess();
-                    hola.cerrarConexion();
+                negArt.agregarArticulo(articulo);
                 MessageBox.Show("Agregado exitosamente");
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.ToString());
-                }
-                finally
-                {
-                    Close();
-                }
-         
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+            }
+            finally
+            {
+                Close();
+            }
         }
 
         private void frmAltaArticulo_Load(object sender, EventArgs e)
         {
             NegocioMarca negocioMarca = new NegocioMarca();
             NegocioCategoria negocioCategoria = new NegocioCategoria();
-            
 
-            marcas = negocioMarca.listar();
-            categorias = negocioCategoria.listar();
+            cmbMarca.DataSource = negocioMarca.listar();
+            cmbMarca.ValueMember = "id";
+            cmbMarca.DisplayMember = "descripcion";
 
-            foreach (Marca marca in marcas)
+            cmbCategoria.DataSource = negocioCategoria.listar();
+            cmbCategoria.ValueMember = "id";
+            cmbCategoria.DisplayMember = "descripcion";
+
+            if (articulo != null && articulo.Id != 0)
             {
-                cmbMarca.Items.Add(marca);
-            }
-            foreach (Categoria categoria in categorias)
-            {
-                cmbCategoria.Items.Add(categoria);
-            }
-            cmbMarca.ValueMember = "Id";
-            cmbMarca.DisplayMember = "Descripcion";
-            cmbCategoria.ValueMember = "Id";
-            cmbCategoria.DisplayMember = "Descripcion";
+                txtCodigo.Text = articulo.Codigo;
+                txtNombre.Text = articulo.Nombre;
+                txtDescripcion.Text = articulo.Descripcion;
+                txtPrecio.Text = articulo.Precio.ToString();
+                txtImagen.Text = articulo.Urlimagen;
 
-            if (articulo != null) 
-            { 
-                txtCodigo.Text = articulo.codigo;
-                txtNombre.Text = articulo.nombre;
-                txtDescripcion.Text = articulo.descripcion;
-                txtPrecio.Text = articulo.precio.ToString();
+                cmbMarca.SelectedValue = articulo.Marca.id;
+                cmbCategoria.SelectedValue = articulo.Categoria.id;
             }
         }
 

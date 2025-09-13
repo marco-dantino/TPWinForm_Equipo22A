@@ -10,12 +10,12 @@ namespace ClasesDominio
 {
     public class Imagen
     {
-        public int id { get; set; }
-        public string urlImagen { get; set; }
-        public int idArticulo { get; set; }
+        public int Id { get; set; }
+        public int IdArticulo { get; set; }
+        public string UrlImagen { get; set; }
         public override string ToString()
         {
-            return urlImagen;
+            return UrlImagen;
         }
     }
 }
