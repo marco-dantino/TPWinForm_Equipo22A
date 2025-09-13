@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
+using ClasesDominio;
 
 namespace Negocio
 {
@@ -16,8 +17,9 @@ namespace Negocio
 
         public DataAccess()
         {
-            connection = new SqlConnection("server=.\\SQLEXPRESS; database=CATALOGO_P3_DB; integrated security=true");
             command = new SqlCommand();
+            connection = new SqlConnection("server=.\\SQLEXPRESS; database=CATALOGO_P3_DB; integrated security=true");
+            command.Connection = connection;
         }
         public void setearConsulta(string query)
         {
@@ -27,8 +29,8 @@ namespace Negocio
 
         public void ejecutaLector()
         {
-            command.Connection = connection;
-            
+            //command.Connection = connection;
+
             try
             {
                 connection.Open();
@@ -37,7 +39,7 @@ namespace Negocio
             catch (Exception ex)
             {
                 throw ex;
-            }
+            }   
         }
 
         public void setearParametro(string nombre, object valor)
@@ -47,10 +49,41 @@ namespace Negocio
 
         public void cerrarConexion()
         {
-            if (lector != null)
+            if (lector != null) { 
                 lector.Close();
+            }
             connection.Close();
         }
 
+        public void ejecutarAccion()
+        {
+
+            try
+            {
+                connection.Open();
+                command.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public object ejecutarScalar()
+        {
+            try
+            {
+                connection.Open();
+                return command.ExecuteScalar();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                cerrarConexion();
+            }
+        }
     }
 }

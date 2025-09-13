@@ -47,5 +47,11 @@ namespace TPWinForm
                 pbArticulo.Load("https://res.cloudinary.com/dqzfmh5kz/image/upload/v1757619195/pngtree-gray-network-placeholder-png-image_3416659_ihqz1y.jpg");
             }
         }
+
+        private void btnAgregarArt_Click(object sender, EventArgs e)
+        {
+            frmAltaArticulo frm = new frmAltaArticulo();
+            frm.ShowDialog();
+        }
     }
 }

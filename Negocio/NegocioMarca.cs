@@ -8,22 +8,22 @@ using System.Windows.Forms;
 
 namespace Negocio
 {
-    public class NegocioCategoria
+    public class NegocioMarca
     {
-        public List<Categoria> listar()
+        public List<Marca> listar()
         {
 
-            List<Categoria> lista = new List<Categoria>();
+            List<Marca> lista = new List<Marca>();
             DataAccess datosArticulo = new DataAccess();
             try
             {
-                datosArticulo.setearConsulta("SELECT Id, Descripcion FROM Categorias");
+                datosArticulo.setearConsulta("SELECT Id, Descripcion FROM MARCAS");
 
                 datosArticulo.ejecutaLector();
 
                 while (datosArticulo.Lector.Read())
                 {
-                    Categoria aux = new Categoria();
+                    Marca aux = new Marca();
                     aux.id = datosArticulo.Lector.GetInt32(0);
                     aux.descripcion = (string)datosArticulo.Lector["Descripcion"];
                     lista.Add(aux);

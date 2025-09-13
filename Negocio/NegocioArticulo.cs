@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ClasesDominio;
+using System.Windows.Forms;
 
 namespace Negocio
 {
@@ -61,7 +62,7 @@ namespace Negocio
                 datosArticulo.setearParametro("@IdArticuloSeleccionado", id);
                 datosArticulo.ejecutaLector();
 
-                
+
                 while (datosArticulo.Lector.Read())
                 {
                     lista.Add(new Imagen
@@ -81,7 +82,28 @@ namespace Negocio
             {
                 datosArticulo.cerrarConexion();
             }
-
         }
+
+        public int agregarArticulo(Articulo newArticulo) {
+            DataAccess datos = new DataAccess();
+            try
+            {
+                datos.setearConsulta("INSERT INTO ARTICULOS (Codigo, Nombre, Descripcion, IdMarca, IdCategoria, Precio, Imagen) VALUES ('" + newArticulo.codigo + "', '" + newArticulo.nombre + "', '" + newArticulo.descripcion + "', " + newArticulo.marca.id + ", " + newArticulo.categoria.id + ", " + newArticulo.precio + ", " + " " + ")");
+                datos.ejecutarAccion();
+
+                datos.setearConsulta("SELECT IDENT_CURRENT('ARTICULOS')");
+                int idArticulo = Convert.ToInt32(datos.ejecutarScalar());
+                return idArticulo;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
     }
 }
