@@ -38,6 +38,11 @@ namespace TPWinForm
 
             try
             {
+                if (!validarCampos()) 
+                {
+                    return;
+                }
+
                 if (articulo == null) 
                 {     
                     articulo = new Articulo();
@@ -64,16 +69,41 @@ namespace TPWinForm
                     negArt.modificar(articulo);
                     MessageBox.Show("Modificado exitosamente");
                 }
+                Close();
 
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error: " + ex.Message);
             }
-            finally
+        }
+
+        private bool validarCampos()
+        {
+            if (string.IsNullOrWhiteSpace(txtCodigo.Text))
             {
-                Close();
+                MessageBox.Show("Debe ingresar un Código.");
+                return false;
             }
+
+            if (string.IsNullOrWhiteSpace(txtNombre.Text))
+            {
+                MessageBox.Show("Debe ingresar un Nombre.");
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtPrecio.Text))
+            {
+                MessageBox.Show("Debe ingresar un Precio válido.");
+                return false;
+            }
+            else if (!float.TryParse(txtPrecio.Text, out _))
+            {
+                MessageBox.Show("El Precio debe ser un número válido.");
+                return false;
+            }
+
+            return true;
         }
 
         private void frmAltaArticulo_Load(object sender, EventArgs e)
