@@ -49,14 +49,21 @@ namespace TPWinForm
 
         private void cargarImagen(string imagen)
         {
+            string placeholder = "https://res.cloudinary.com/dqzfmh5kz/image/upload/v1757619195/pngtree-gray-network-placeholder-png-image_3416659_ihqz1y.jpg";
+
             try
             {
-                pbArticulo.Load(imagen);
+                if (string.IsNullOrWhiteSpace(imagen)) { 
+                    pbArticulo.Load(placeholder);
+                }
+                else { 
+                    pbArticulo.Load(imagen);
+                }
                 pbArticulo.SizeMode = PictureBoxSizeMode.Zoom;
             }
             catch (Exception)
             {
-                pbArticulo.Load("https://res.cloudinary.com/dqzfmh5kz/image/upload/v1757619195/pngtree-gray-network-placeholder-png-image_3416659_ihqz1y.jpg");
+                pbArticulo.Load(placeholder);
             }
         }
 

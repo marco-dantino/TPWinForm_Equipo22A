@@ -48,7 +48,7 @@ namespace TPWinForm
                 articulo.Codigo = txtCodigo.Text;
                 articulo.Precio = float.Parse(txtPrecio.Text);
 
-                articulo.Urlimagen = string.IsNullOrWhiteSpace(txtImagen.Text) ? "https://res.cloudinary.com/dqzfmh5kz/image/upload/v1757619195/pngtree-gray-network-placeholder-png-image_3416659_ihqz1y.jpg" : txtImagen.Text;
+                articulo.Urlimagen = string.IsNullOrWhiteSpace(txtImagen.Text) ? null : txtImagen.Text;
 
 
                 articulo.Marca = (Marca)cmbMarca.SelectedItem;
