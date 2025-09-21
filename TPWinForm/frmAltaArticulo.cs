@@ -59,6 +59,15 @@ namespace TPWinForm
                 articulo.Marca = (Marca)cmbMarca.SelectedItem;
                 articulo.Categoria = (Categoria)cmbCategoria.SelectedItem;
 
+
+                //stackoverflow.com/questions/3703256/linq-extension-methods-any-vs-where-vs-exists
+                List<Articulo> articulos = negArt.listar();
+                if (articulos.Any(a => a.Codigo == articulo.Codigo && a.Id != articulo.Id))
+                {
+                    MessageBox.Show("Ya existe un artículo con ese Código.");
+                    return;
+                }
+
                 if (articulo.Id == 0) 
                 { 
                     negArt.agregarArticulo(articulo);
