@@ -38,13 +38,13 @@ namespace TPWinForm
 
             try
             {
-                if (!validarCampos()) 
+                if (!validarCampos())
                 {
                     return;
                 }
 
-                if (articulo == null) 
-                {     
+                if (articulo == null)
+                {
                     articulo = new Articulo();
                 }
 
@@ -52,9 +52,6 @@ namespace TPWinForm
                 articulo.Descripcion = txtDescripcion.Text;
                 articulo.Codigo = txtCodigo.Text;
                 articulo.Precio = float.Parse(txtPrecio.Text);
-
-                articulo.Urlimagen = string.IsNullOrWhiteSpace(txtImagen.Text) ? null : txtImagen.Text;
-
 
                 articulo.Marca = (Marca)cmbMarca.SelectedItem;
                 articulo.Categoria = (Categoria)cmbCategoria.SelectedItem;
@@ -68,16 +65,16 @@ namespace TPWinForm
                     return;
                 }
 
-                if (articulo.Id == 0) 
-                { 
-                    negArt.agregarArticulo(articulo);
-                    MessageBox.Show("Agregado exitosamente");
-                }
-                else
-                {
-                    negArt.modificar(articulo);
-                    MessageBox.Show("Modificado exitosamente");
-                }
+                //if (articulo.Id == 0)
+                //{
+                //    negArt.agregarArticulo(articulo);
+                //    MessageBox.Show("Agregado exitosamente");
+                //}
+                //else
+                //{
+                //    negArt.modificar(articulo);
+                //    MessageBox.Show("Modificado exitosamente");
+                //}
                 Close();
 
             }
@@ -134,7 +131,6 @@ namespace TPWinForm
                 txtNombre.Text = articulo.Nombre;
                 txtDescripcion.Text = articulo.Descripcion;
                 txtPrecio.Text = articulo.Precio.ToString();
-                txtImagen.Text = articulo.Urlimagen;
 
                 cmbMarca.SelectedValue = articulo.Marca.id;
                 cmbCategoria.SelectedValue = articulo.Categoria.id;

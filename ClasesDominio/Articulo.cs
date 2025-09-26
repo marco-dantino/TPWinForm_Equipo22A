@@ -14,7 +14,7 @@ namespace ClasesDominio
         public string Descripcion { get; set; }
         public Marca Marca { get; set; } = new Marca();
         public Categoria Categoria { get; set; } = new Categoria();
-        public string Urlimagen { get; set; }
+        public List<Imagen> Imagenes { get; set; } = new List<Imagen>();
         public float Precio { get; set; }
     }
 }

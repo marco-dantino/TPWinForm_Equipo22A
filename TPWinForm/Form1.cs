@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,7 @@ namespace TPWinForm
     public partial class cart : Form
     {
         private List<Articulo> Articulos;
+        Articulo seleccionado = null;
         public cart()
         {
             InitializeComponent();
@@ -26,14 +28,15 @@ namespace TPWinForm
 
         private void cargar()
         {
-            NegocioArticulo articulo = new NegocioArticulo();
+            NegocioArticulo negocioArticulo = new NegocioArticulo();
+            
             try
             {
-                Articulos = articulo.listar();
-                
+                Articulos = negocioArticulo.listar();
+
                 dgvArticulos.DataSource = Articulos;
-                dgvArticulos.Columns["UrlImagen"].Visible = false;
-                cargarImagen(Articulos[0].Urlimagen);
+
+                cargarImagen(Articulos[0].Imagenes[0].UrlImagen);
             }
             catch (Exception ex)
             {
@@ -43,27 +46,27 @@ namespace TPWinForm
 
         private void dgvArticulos_SelectionChanged(object sender, EventArgs e)
         {
-            Articulo seleccionado = (Articulo)dgvArticulos.CurrentRow.DataBoundItem;
-            cargarImagen(seleccionado.Urlimagen);
+            if (dgvArticulos.CurrentRow == null) return;
+
+            seleccionado = (Articulo)dgvArticulos.CurrentRow.DataBoundItem;
+
+            if (seleccionado.Imagenes != null && seleccionado.Imagenes.Count > 0)
+                cargarImagen(seleccionado.Imagenes[0].UrlImagen);
+            else
+                cargarImagen(null);
         }
 
-        private void cargarImagen(string imagen)
-        {
-            string placeholder = "https://res.cloudinary.com/dqzfmh5kz/image/upload/v1757619195/pngtree-gray-network-placeholder-png-image_3416659_ihqz1y.jpg";
 
+        private void cargarImagen(string URL)
+        {
+            string placeHolder = "https://res.cloudinary.com/dqzfmh5kz/image/upload/v1757619195/pngtree-gray-network-placeholder-png-image_3416659_ihqz1y.jpg";
             try
             {
-                if (string.IsNullOrWhiteSpace(imagen)) { 
-                    pbArticulo.Load(placeholder);
-                }
-                else { 
-                    pbArticulo.Load(imagen);
-                }
-                pbArticulo.SizeMode = PictureBoxSizeMode.Zoom;
+                pbArticulo.Load(URL);
             }
             catch (Exception)
             {
-                pbArticulo.Load(placeholder);
+                pbArticulo.Load(placeHolder);
             }
         }
 
@@ -92,7 +95,7 @@ namespace TPWinForm
             try
             {
                 seleccionado = (Articulo)dgvArticulos.CurrentRow.DataBoundItem;
-                negArt.eliminar(seleccionado.Id);
+                //negArt.eliminar(seleccionado.Id);
                 dgvArticulos.DataSource = null;
                 dgvArticulos.DataSource = negArt.listar();
             }
@@ -100,6 +103,10 @@ namespace TPWinForm
             {
                 MessageBox.Show("Error: " + ex.Message);
             }
+        }
+        private void btnSiguiente_Click(object sender, EventArgs e)
+        {
+            Articulo seleccionado = (Articulo)dgvArticulos.CurrentRow.DataBoundItem;
         }
     }
 }
