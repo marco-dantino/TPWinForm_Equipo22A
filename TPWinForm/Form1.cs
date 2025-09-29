@@ -15,8 +15,8 @@ namespace TPWinForm
 {
     public partial class cart : Form
     {
-        private List<Articulo> Articulos;
-        Articulo seleccionado = null;
+        private List<Articulo> listaArticulos;
+        int indiceImagen = 0;
         public cart()
         {
             InitializeComponent();
@@ -28,15 +28,15 @@ namespace TPWinForm
 
         private void cargar()
         {
-            NegocioArticulo negocioArticulo = new NegocioArticulo();
+            NegocioArticulo negocio = new NegocioArticulo();
             
             try
             {
-                Articulos = negocioArticulo.listar();
+                listaArticulos = negocio.listar();
+                dgvArticulos.DataSource = negocio.listar();
 
-                dgvArticulos.DataSource = Articulos;
-
-                cargarImagen(Articulos[0].Imagenes[0].UrlImagen);
+                pbArticulo.SizeMode = PictureBoxSizeMode.StretchImage;
+                cargarImagen(listaArticulos[0].Imagenes[indiceImagen].ImagenUrl);
             }
             catch (Exception ex)
             {
@@ -47,13 +47,33 @@ namespace TPWinForm
         private void dgvArticulos_SelectionChanged(object sender, EventArgs e)
         {
             if (dgvArticulos.CurrentRow == null) return;
+            Articulo seleccionado = (Articulo)dgvArticulos.CurrentRow.DataBoundItem;
+            indiceImagen = 0;
 
-            seleccionado = (Articulo)dgvArticulos.CurrentRow.DataBoundItem;
-
-            if (seleccionado.Imagenes != null && seleccionado.Imagenes.Count > 0)
-                cargarImagen(seleccionado.Imagenes[0].UrlImagen);
+            if (seleccionado.Imagenes.Count > 0)
+            {
+                cargarImagen(seleccionado.Imagenes[indiceImagen].ImagenUrl);
+            }
             else
+            {
                 cargarImagen(null);
+            }
+
+            validarBotones();
+        }
+        private void validarBotones()
+        {
+            Articulo seleccionado = (Articulo)dgvArticulos.CurrentRow.DataBoundItem;
+
+            if (seleccionado == null || seleccionado.Imagenes.Count == 0)
+            {
+                btnAnterior.Enabled = false;
+                btnSiguiente.Enabled = false;
+                return;
+            }
+
+            btnAnterior.Enabled = indiceImagen > 0;
+            btnSiguiente.Enabled = indiceImagen < seleccionado.Imagenes.Count - 1;
         }
 
 
@@ -107,6 +127,23 @@ namespace TPWinForm
         private void btnSiguiente_Click(object sender, EventArgs e)
         {
             Articulo seleccionado = (Articulo)dgvArticulos.CurrentRow.DataBoundItem;
+            if (seleccionado.Imagenes.Count > 0 && indiceImagen < seleccionado.Imagenes.Count - 1)
+            {
+                indiceImagen++;
+                cargarImagen(seleccionado.Imagenes[indiceImagen].ImagenUrl);
+                validarBotones();
+            }
+        }
+
+        private void btnAnterior_Click(object sender, EventArgs e)
+        {
+            Articulo seleccionado = (Articulo)dgvArticulos.CurrentRow.DataBoundItem;
+            if (seleccionado.Imagenes.Count > 0 && indiceImagen > 0)
+            {
+                indiceImagen--;
+                cargarImagen(seleccionado.Imagenes[indiceImagen].ImagenUrl);
+                validarBotones();
+            }
         }
     }
 }

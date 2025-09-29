@@ -38,7 +38,8 @@ namespace Negocio
                                 new Categoria { id = datos.Lector.GetInt32(8), descripcion = (string)datos.Lector["Categoria"] } :
                                 new Categoria { descripcion = "Sin categoría" };
                     aux.Precio = (float)Convert.ToDecimal(datos.Lector["Precio"]);
-                    aux.Imagenes = GetImagenes(aux.Id);
+                    
+                    GetImagenes(aux.Id).ForEach(img => aux.Imagenes.Add(img));
 
                     lista.Add(aux);
                 }
@@ -57,58 +58,37 @@ namespace Negocio
 
         public List<Imagen> GetImagenes(int idArti)
         {
-            List<Imagen> lista = new List<Imagen>();
+            List<Imagen> listaImagenes = new List<Imagen>();
             DataAccess datos = new DataAccess();
-            
+
             try
             {
-
-                datos.setearConsulta("SELECT Id, ImagenUrl FROM IMAGENES WHERE IdArticulo = @IdArticulo");
+                datos.setearConsulta("SELECT Id, IdArticulo, ImagenUrl FROM IMAGENES WHERE IdArticulo = @IdArticulo");
                 datos.setearParametro("@IdArticulo", idArti);
                 datos.ejecutaLector();
 
                 while (datos.Lector.Read())
                 {
-                    Imagen imagen = new Imagen
-                    {
-                        Id = (int)datos.Lector["Id"],
-                        IdArticulo = idArti,
-                        UrlImagen = (string)datos.Lector["ImagenUrl"]
-                    };
-                    lista.Add(imagen);
+                    Imagen aux = new Imagen();
+                    aux.Id = (int)datos.Lector["Id"];
+                    aux.IdArticulo = (int)datos.Lector["IdArticulo"];
+                    aux.ImagenUrl = (string)datos.Lector["ImagenUrl"];
+
+                    listaImagenes.Add(aux);
                 }
 
-                return lista;
+                return listaImagenes;
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        
         }
-
-        //public List<string> VerImagenes(int id)
-        //{
-        //    DataAccess datosArticulo = new DataAccess();
-        //    List<string> lista = new List<string>();
-        //    try
-        //    {
-        //        datosArticulo.setearConsulta($"select ImagenUrl from IMAGENES where IdArticulo = '{id}'");
-        //        datosArticulo.ejecutaLector();
-        //        while (datosArticulo.Lector.Read())
-        //        {
-        //            lista.Add(datosArticulo.Lector["ImagenUrl"].ToString());
-
-        //        }
-        //        return lista;
-        //    }
-        //    catch (Exception)
-        //    {
-
-        //        throw;
-        //    }
-        //}
-
 
         //public int agregarArticulo(Articulo newArticulo)
         //{
